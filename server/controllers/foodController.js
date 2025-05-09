@@ -1,8 +1,8 @@
 import pool from '../server.js';
 
-export const fetchCities = async (req, res) => {
+export const fetchFoodPlaces = async (req, res) => {
   try {
-    const result = await pool.query("SELECT name, longitude, latitude FROM locations WHERE location_type = 'city'");
+    const result = await pool.query("SELECT name, longitude, latitude FROM locations WHERE location_type = 'food'");
     res.json(result.rows);
   } catch (error) {
     console.error("Error fetching cities:", error);

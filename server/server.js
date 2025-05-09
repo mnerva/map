@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import pkg from "pg";
 import maptilerRoutes from './routes/maptilerRoutes.js';
-// import locationsRouter from './routes/locationsRoutes';
+import locationsRoutes from './routes/locationsRoutes.js';
+import foodRoutes from './routes/foodRoutes.js';
 
 const { Pool } = pkg;
 dotenv.config();
@@ -27,24 +28,26 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Use routes
-// app.use('/api/locations', locationsRouter);
 app.use('/map-tiler', maptilerRoutes);
+app.use('/cities', locationsRoutes);
+app.use('/food', foodRoutes);
 
 // Create a connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-app.get("/map-db", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.send(`Database time: ${result.rows[0].now}`);
-  } catch (err) {
-    console.error("DB error:", err);
-    res.status(500).send("Database connection failed");
-  }
-});
+// Test the connection to the database
+pool.connect()
+  .then(() => {
+    console.log('Connected to the database');
+  })
+  .catch(err => {
+    console.error('Error connecting to the database:', err);
+  });
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
+
+export default pool;
