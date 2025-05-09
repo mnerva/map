@@ -6,13 +6,13 @@
   <title>Display a map</title>
   <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.2.0/maptiler-sdk.umd.min.js"></script>
   <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.2.0/maptiler-sdk.css" rel="stylesheet" />
-  <style>
-    body { margin: 0; padding: 0; }
-    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-  </style>
+  <style src="index.html"></style>
 </head>
 <body>
-  <div id="map"></adiv>
-  <script src="map.js"></script>
+  <div id="map-container">
+    <button id="citiesBtn">Cities</button>
+    <div id="map" style="height: 100vh;"></div>
+  </div>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
