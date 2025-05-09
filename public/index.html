@@ -12,23 +12,7 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <script>
-      fetch('/api/maptiler-key')
-      .then(res => res.json())
-      .then(data => {
-        maptilersdk.config.apiKey = data.apiKey;
-        const map = new maptilersdk.Map({
-          container: 'map',
-          style: maptilersdk.MapStyle.STREETS,
-          projection: 'globe',
-          center: [0, 40],
-          zoom: 2,
-        });
-      })
-      .catch(err => {
-        console.error('Failed to load MapTiler API key:', err);
-      });
-  </script>
+  <div id="map"></adiv>
+  <script src="map.js"></script>
 </body>
 </html>

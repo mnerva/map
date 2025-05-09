@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    environment:
+      POSTGRES_USER: map_user
+      POSTGRES_PASSWORD: kjhkjh
+      POSTGRES_DB: map_db
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - map_network
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://map_user:kjhkjh@db:5432/map_db
+    ports:
+      - "8000:8000"
+    networks:
+      - map_network
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3009:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - map_network
+    depends_on:
+    - backend
+
+volumes:
+  pgdata:
+
+networks:
+  map_network:
