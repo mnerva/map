@@ -1,5 +1,6 @@
-import { initMap, addCityMarkers } from './map.js';
+import { initMap, toggleMarkers } from './map.js';
 import { fetchCities } from './api.js';
+import { fetchFoodPlaces } from './api.js';
 
 let map;
 
@@ -8,14 +9,25 @@ window.addEventListener('DOMContentLoaded', async () => {
     map = await initMap();
 
     const citiesBtn = document.getElementById('citiesBtn');
+    const foodBtn = document.getElementById('foodBtn');
+
     if (citiesBtn) {
-      console.log('Cities button there!!?');
       citiesBtn.addEventListener('click', async () => {
-        console.log('Cities button clicked');
         try {
           const cities = await fetchCities();
-          console.log('Cities:', cities);
-          addCityMarkers(map, cities);
+          toggleMarkers(map, cities, 'city');
+        } catch (err) {
+          console.error('Failed to load cities:', err);
+        }
+      });
+    }
+
+    if (foodBtn) {
+      foodBtn.addEventListener('click', async () => {
+        try {
+          const foodPlaces = await fetchFoodPlaces();
+
+          toggleMarkers(map, foodPlaces, 'food');
         } catch (err) {
           console.error('Failed to load cities:', err);
         }

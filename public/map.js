@@ -18,12 +18,64 @@ export async function initMap() {
   return map;
 }
 
-export function addCityMarkers(map, cities) {
-  console.log("i am in the addCityMarkers function")
-  cities.forEach(city => {
-    new maptilersdk.Marker()
-      .setLngLat([city.longitude, city.latitude])
-      .setPopup(new maptilersdk.Popup().setText(city.name))
-      .addTo(map);
-  });
+const markerColors = {
+  city: '#8b826c',
+  food: '#694f40',
+}
+
+let cityMarkers = [];
+let foodMarkers = [];
+let cityMarkersVisible = false;
+let foodMarkersVisible = false;
+
+export function toggleMarkers(map, items, type) {
+  const markerColor = markerColors[type] || '#000000';
+
+  if (type === 'city') {
+    if (cityMarkersVisible) {
+      // Remove city markers
+      cityMarkers.forEach(marker => marker.remove());
+      cityMarkers = [];  // Clear city markers
+    } else {
+      // Add city markers
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'dot-marker';
+        el.style.backgroundColor = markerColor;
+
+        const marker = new maptilersdk.Marker({ element: el })
+          .setLngLat([item.longitude, item.latitude])
+          .setPopup(new maptilersdk.Popup().setText(item.name))
+          .addTo(map);
+
+        cityMarkers.push(marker);  // Store the city marker
+      });
+    }
+    // Toggle visibility state
+    cityMarkersVisible = !cityMarkersVisible;
+  }
+
+  if (type === 'food') {
+    if (foodMarkersVisible) {
+      // Remove food markers
+      foodMarkers.forEach(marker => marker.remove());
+      foodMarkers = [];  // Clear food markers
+    } else {
+      // Add food markers
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'dot-marker';
+        el.style.backgroundColor = markerColor;
+
+        const marker = new maptilersdk.Marker({ element: el })
+          .setLngLat([item.longitude, item.latitude])
+          .setPopup(new maptilersdk.Popup().setText(item.name))
+          .addTo(map);
+
+        foodMarkers.push(marker);  // Store the food marker
+      });
+    }
+    // Toggle visibility state
+    foodMarkersVisible = !foodMarkersVisible;
+  }
 }

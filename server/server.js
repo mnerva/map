@@ -6,6 +6,7 @@ import cors from 'cors';
 import pkg from "pg";
 import maptilerRoutes from './routes/maptilerRoutes.js';
 import locationsRoutes from './routes/locationsRoutes.js';
+import foodRoutes from './routes/foodRoutes.js';
 
 const { Pool } = pkg;
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Use routes
 app.use('/map-tiler', maptilerRoutes);
 app.use('/cities', locationsRoutes);
+app.use('/food', foodRoutes);
 
 // Create a connection pool
 const pool = new Pool({
