@@ -39,27 +39,53 @@ let markersVisible = {
 export function toggleMarkers(map, items, type) {
   const markerColor = markerColors[type] || '#000000';
 
-  const isVisible = markersVisible[type];
+  // Create GeoJSON data for the markers
+  const geojson = {
+    type: 'FeatureCollection',
+    features: items.map(item => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [item.longitude, item.latitude],
+      },
+      properties: {
+        title: item.name,
+      },
+    })),
+  };
 
-  if (isVisible) {
-    // Remove markers
-    markers[type].forEach(marker => marker.remove());
-    markers[type] = [];
+  // Remove the existing layer if it's already visible
+  if (markersVisible[type]) {
+    map.removeLayer(`${type}-markers`);
+    map.removeSource(`${type}-markers`);
+    markersVisible[type] = false;
   } else {
-    // Add markers
-    items.forEach(item => {
-      const el = document.createElement('div');
-      el.className = 'dot-marker';
-      el.style.backgroundColor = markerColor;
+    // Add a new layer for the markers
+    map.addSource(`${type}-markers`, {
+      type: 'geojson',
+      data: geojson,
+    });
 
-      const marker = new maptilersdk.Marker({ element: el })
-        .setLngLat([item.longitude, item.latitude])
-        .setPopup(new maptilersdk.Popup().setText(item.name))
+    map.addLayer({
+      id: `${type}-markers`,
+      type: 'circle',
+      source: `${type}-markers`,
+      paint: {
+        'circle-radius': 6,
+        'circle-color': markerColor,
+        'circle-opacity': 0.9,
+      },
+    });
+
+    markersVisible[type] = true;
+
+    // Add click event listener to show popups
+    map.on('click', `${type}-markers`, (e) => {
+      const feature = e.features[0];
+      const popup = new maptilersdk.Popup()
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(`<h3>${feature.properties.title}</h3>`)
         .addTo(map);
-
-      markers[type].push(marker);
     });
   }
-  // Toggle visibility state
-  markersVisible[type] = !markersVisible[type];
 }

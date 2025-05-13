@@ -16,18 +16,25 @@ body {
 }
 
 .filterBtn {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: rgba(0, 0, 0, 0.7);  /* Optional: make the button background a little transparent */
-  color: white;
+  background-color: #f4f4f4;
   border: none;
-  border-radius: 20px;
+  padding: 10px;
+  font-size: 20px;
   cursor: pointer;
-  z-index: 1000;  /* Ensure the button is above the map */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  z-index: 1000;
 }
 
 .filterBtn:hover {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: #e2e2e2;
+}
+
+.filterBtn i {
+  margin-right: 8px;
 }
 
 .dot-marker {
