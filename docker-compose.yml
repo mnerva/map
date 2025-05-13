@@ -1,6 +1,7 @@
 services:
   db:
     image: postgis/postgis:15-3.3-alpine
+    platform: linux/amd64
     environment:
       POSTGRES_USER: map_user
       POSTGRES_PASSWORD: kjhkjh
@@ -8,7 +9,8 @@ services:
     ports:
       - "55432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./server/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./server/db/pgdata:/var/lib/postgresql/data
     networks:
       - map_network
 
@@ -37,9 +39,6 @@ services:
       - map_network
     depends_on:
     - backend
-
-volumes:
-  pgdata:
 
 networks:
   map_network:
