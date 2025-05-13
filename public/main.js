@@ -1,6 +1,5 @@
 import { initMap, toggleMarkers } from './map.js';
-import { fetchCities } from './api.js';
-import { fetchFoodPlaces } from './api.js';
+import { fetchCities, fetchFoodPlaces, fetchBooks } from './api.js';
 
 let map;
 
@@ -10,6 +9,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     const citiesBtn = document.getElementById('citiesBtn');
     const foodBtn = document.getElementById('foodBtn');
+    const booksBtn = document.getElementById('booksBtn');
 
     if (citiesBtn) {
       citiesBtn.addEventListener('click', async () => {
@@ -33,6 +33,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
       });
     }
+
+    if (booksBtn) {
+      console.log('Books button found');
+      booksBtn.addEventListener('click', async () => {
+        console.log('Books button clicked');
+        try {
+          const books = await fetchBooks();
+          console.log('Fetched books:', books);
+
+          toggleMarkers(map, books, 'books');
+        } catch (err) {
+          console.error('Failed to load cities:', err);
+        }
+      });
+    }
+
   } catch (err) {
     console.error('Failed to initialize map:', err);
   }

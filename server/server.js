@@ -7,6 +7,7 @@ import pkg from "pg";
 import maptilerRoutes from './routes/maptilerRoutes.js';
 import locationsRoutes from './routes/locationsRoutes.js';
 import foodRoutes from './routes/foodRoutes.js';
+import booksRoutes from './routes/booksRoutes.js';
 
 const { Pool } = pkg;
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/map-tiler', maptilerRoutes);
 app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
+app.use('/books', booksRoutes);
 
 // Create a connection pool
 const pool = new Pool({

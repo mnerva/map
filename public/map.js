@@ -21,12 +21,15 @@ export async function initMap() {
 const markerColors = {
   city: '#8b826c',
   food: '#694f40',
+  books: '#4f6940',
 }
 
 let cityMarkers = [];
 let foodMarkers = [];
+let booksMarkers = [];
 let cityMarkersVisible = false;
 let foodMarkersVisible = false;
+let booksMarkersVisible = false;
 
 export function toggleMarkers(map, items, type) {
   const markerColor = markerColors[type] || '#000000';
@@ -61,6 +64,7 @@ export function toggleMarkers(map, items, type) {
       foodMarkers.forEach(marker => marker.remove());
       foodMarkers = [];  // Clear food markers
     } else {
+      console.log('Adding food markers');
       // Add food markers
       items.forEach(item => {
         const el = document.createElement('div');
@@ -77,5 +81,29 @@ export function toggleMarkers(map, items, type) {
     }
     // Toggle visibility state
     foodMarkersVisible = !foodMarkersVisible;
+  }
+
+  if (type === 'books') {
+    if (booksMarkersVisible) {
+      // Remove food markers
+      booksMarkers.forEach(marker => marker.remove());
+      booksMarkers = [];  // Clear food markers
+    } else {
+      // Add food markers
+      items.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'dot-marker';
+        el.style.backgroundColor = markerColor;
+
+        const marker = new maptilersdk.Marker({ element: el })
+          .setLngLat([item.longitude, item.latitude])
+          .setPopup(new maptilersdk.Popup().setText(item.name))
+          .addTo(map);
+
+        booksMarkers.push(marker);  // Store the food marker
+      });
+    }
+    // Toggle visibility state
+    booksMarkersVisible = !booksMarkersVisible;
   }
 }
