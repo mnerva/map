@@ -24,86 +24,42 @@ const markerColors = {
   books: '#4f6940',
 }
 
-let cityMarkers = [];
-let foodMarkers = [];
-let booksMarkers = [];
-let cityMarkersVisible = false;
-let foodMarkersVisible = false;
-let booksMarkersVisible = false;
+let markers = {
+  city: [],
+  food: [],
+  books: []
+};
+
+let markersVisible = {
+  city: false,
+  food: false,
+  books: false
+};
 
 export function toggleMarkers(map, items, type) {
   const markerColor = markerColors[type] || '#000000';
 
-  if (type === 'city') {
-    if (cityMarkersVisible) {
-      // Remove city markers
-      cityMarkers.forEach(marker => marker.remove());
-      cityMarkers = [];  // Clear city markers
-    } else {
-      // Add city markers
-      items.forEach(item => {
-        const el = document.createElement('div');
-        el.className = 'dot-marker';
-        el.style.backgroundColor = markerColor;
+  const isVisible = markersVisible[type];
 
-        const marker = new maptilersdk.Marker({ element: el })
-          .setLngLat([item.longitude, item.latitude])
-          .setPopup(new maptilersdk.Popup().setText(item.name))
-          .addTo(map);
+  if (isVisible) {
+    // Remove markers
+    markers[type].forEach(marker => marker.remove());
+    markers[type] = [];
+  } else {
+    // Add markers
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'dot-marker';
+      el.style.backgroundColor = markerColor;
 
-        cityMarkers.push(marker);  // Store the city marker
-      });
-    }
-    // Toggle visibility state
-    cityMarkersVisible = !cityMarkersVisible;
+      const marker = new maptilersdk.Marker({ element: el })
+        .setLngLat([item.longitude, item.latitude])
+        .setPopup(new maptilersdk.Popup().setText(item.name))
+        .addTo(map);
+
+      markers[type].push(marker);
+    });
   }
-
-  if (type === 'food') {
-    if (foodMarkersVisible) {
-      // Remove food markers
-      foodMarkers.forEach(marker => marker.remove());
-      foodMarkers = [];  // Clear food markers
-    } else {
-      console.log('Adding food markers');
-      // Add food markers
-      items.forEach(item => {
-        const el = document.createElement('div');
-        el.className = 'dot-marker';
-        el.style.backgroundColor = markerColor;
-
-        const marker = new maptilersdk.Marker({ element: el })
-          .setLngLat([item.longitude, item.latitude])
-          .setPopup(new maptilersdk.Popup().setText(item.name))
-          .addTo(map);
-
-        foodMarkers.push(marker);  // Store the food marker
-      });
-    }
-    // Toggle visibility state
-    foodMarkersVisible = !foodMarkersVisible;
-  }
-
-  if (type === 'books') {
-    if (booksMarkersVisible) {
-      // Remove food markers
-      booksMarkers.forEach(marker => marker.remove());
-      booksMarkers = [];  // Clear food markers
-    } else {
-      // Add food markers
-      items.forEach(item => {
-        const el = document.createElement('div');
-        el.className = 'dot-marker';
-        el.style.backgroundColor = markerColor;
-
-        const marker = new maptilersdk.Marker({ element: el })
-          .setLngLat([item.longitude, item.latitude])
-          .setPopup(new maptilersdk.Popup().setText(item.name))
-          .addTo(map);
-
-        booksMarkers.push(marker);  // Store the food marker
-      });
-    }
-    // Toggle visibility state
-    booksMarkersVisible = !booksMarkersVisible;
-  }
+  // Toggle visibility state
+  markersVisible[type] = !markersVisible[type];
 }

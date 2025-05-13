@@ -35,12 +35,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (booksBtn) {
-      console.log('Books button found');
       booksBtn.addEventListener('click', async () => {
-        console.log('Books button clicked');
         try {
           const books = await fetchBooks();
-          console.log('Fetched books:', books);
 
           toggleMarkers(map, books, 'books');
         } catch (err) {
