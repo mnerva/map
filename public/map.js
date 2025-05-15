@@ -23,18 +23,21 @@ const markerColors = {
   city: '#8b826c',
   food: '#694f40',
   books: '#4f6940',
+  nature: '#4f4069',
 }
 
 let markers = {
   city: [],
   food: [],
-  books: []
+  books: [],
+  nature: []
 };
 
 let markersVisible = {
   city: false,
   food: false,
-  books: false
+  books: false,
+  nature: false
 };
 
 export function toggleMarkers(map, items, type) {

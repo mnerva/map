@@ -78,8 +78,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   transition: background-color 0.2s;
   z-index: 1000;
+  appearance: none;
+}
+
+.mapstyles-select:focus {
+  outline: none;
 }
 
 .mapstyles-select:hover {

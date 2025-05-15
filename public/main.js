@@ -1,5 +1,5 @@
 import { initMap, toggleMarkers } from './map.js';
-import { fetchCities, fetchFoodPlaces, fetchBooks } from './api.js';
+import { fetchCities, fetchFoodPlaces, fetchBooks, fetchNature } from './api.js';
 
 let map;
 
@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const citiesBtn = document.getElementById('citiesBtn');
     const foodBtn = document.getElementById('foodBtn');
     const booksBtn = document.getElementById('booksBtn');
+    const natureBtn = document.getElementById('natureBtn');
     const mapStyle = document.querySelector('.mapstyles-select')
 
     if (citiesBtn) {
@@ -29,7 +30,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           const foodPlaces = await fetchFoodPlaces();
           toggleMarkers(map, foodPlaces, 'food');
         } catch (err) {
-          console.error('Failed to load cities:', err);
+          console.error('Failed to load food:', err);
         }
       });
     }
@@ -40,7 +41,18 @@ window.addEventListener('DOMContentLoaded', async () => {
           const books = await fetchBooks();
           toggleMarkers(map, books, 'books');
         } catch (err) {
-          console.error('Failed to load cities:', err);
+          console.error('Failed to load books:', err);
+        }
+      });
+    }
+
+    if (natureBtn) {
+      natureBtn.addEventListener('click', async () => {
+        try {
+          const nature = await fetchNature();
+          toggleMarkers(map, nature, 'nature');
+        } catch (err) {
+          console.error('Failed to load nature:', err);
         }
       });
     }
