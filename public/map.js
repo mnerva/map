@@ -16,6 +16,14 @@ export async function initMap() {
     projectionControl: true,
   });
 
+  // Reset markersVisible when the style changes
+  map.on('style.load', () => {
+    console.log('Map style changed, resetting markersVisible state...');
+    Object.keys(markersVisible).forEach(type => {
+      markersVisible[type] = false;
+    });
+  });
+  
   return map;
 }
 
