@@ -16,6 +16,25 @@
       <button id="foodBtn" class="filterBtn"><i class="fas fa-utensils"></i></button>
       <button id="booksBtn" class="filterBtn"><i class="fas fa-book"></i></button>
     </div>
+    <select class="mapstyles-select">
+      <optgroup label="Navigation and city exploration">
+        <option value="STREETS">STREETS</option>
+        <option value="STREETS.DARK" selected>STREETS.DARK</option>
+        <option value="STREETS.LIGHT">STREETS.LIGHT</option>
+        <option value="STREETS.PASTEL">STREETS.PASTEL</option>
+      </optgroup>
+      <option value="OUTDOOR">OUTDOOR</option>
+      <option value="WINTER">WINTER</option>
+      <option value="SATELLITE">SATELLITE</option>
+      <option value="HYBRID">HYBRID</option>
+      <optgroup label="Data visualization">
+        <option value="DATAVIZ">DATAVIZ</option>
+        <option value="DATAVIZ.DARK">DATAVIZ.DARK</option>
+        <option value="DATAVIZ.LIGHT">DATAVIZ.LIGHT</option>
+      </optgroup>
+      <option value="YOUR_CUSTOM_MAP_ID_1">Custom map name 1</option>
+      <option value="YOUR_CUSTOM_MAP_ID_2">Custom map name 2</option>
+    </select>
     <div id="map" style="height: 100vh;"></div>
   </div>
   <script type="module" src="./main.js"></script>
