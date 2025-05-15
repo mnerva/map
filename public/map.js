@@ -73,6 +73,14 @@ export function toggleMarkers(map, items, type) {
   if (markersVisible[type]) {
     if (map.getLayer(layerId)) map.removeLayer(layerId);
     if (map.getSource(sourceId)) map.removeSource(sourceId);
+
+    items.forEach(item => {
+      const polygonLayerId = `polygon-${type}-${item.id}`;
+      const polygonSourceId = `polygon-${type}-${item.id}`;
+      if (map.getLayer(polygonLayerId)) map.removeLayer(polygonLayerId);
+      if (map.getSource(polygonSourceId)) map.removeSource(polygonSourceId);
+    });
+
     markersVisible[type] = false;
     return
   }
@@ -100,6 +108,38 @@ export function toggleMarkers(map, items, type) {
     },
   });
 
+  items.forEach(item => {
+    console.log('Item:', item);
+    console.log('Polygon??:', item.polygon);
+    if (item.polygon) {
+      console.log('Polygon:', item.polygon);
+      const polygonSourceId = `polygon-${type}-${item.id}`;
+      const polygonLayerId = `polygon-${type}-${item.id}`;
+
+      console.log('Adding polygon layer:', polygonLayerId);
+      console.log('Polygon source:', polygonSourceId);
+
+      map.addSource(polygonSourceId, {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: item.polygon,
+          properties: {},
+        },
+      });
+
+      map.addLayer({
+        id: polygonLayerId,
+        type: 'line',
+        source: polygonSourceId,
+        paint: {
+          'line-color': markerColor,
+          'line-opacity': 1,
+        },
+      });
+    }
+  });
+
   markersVisible[type] = true;
 
   map.on('click', layerId, (e) => {
@@ -119,4 +159,5 @@ export function toggleMarkers(map, items, type) {
       .setHTML(popupContent)
       .addTo(map);
   });
+
 }
