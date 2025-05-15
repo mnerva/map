@@ -21,3 +21,11 @@ export async function fetchBooks() {
   }
   return res.json();
 }
+
+export async function fetchNature() {
+  const res = await fetch('/api/nature');
+  if (!res.ok) {
+    throw new Error('Failed to fetch nature');
+  }
+  return res.json();
+}

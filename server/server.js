@@ -5,9 +5,10 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import pkg from "pg";
 import maptilerRoutes from './routes/maptilerRoutes.js';
-import locationsRoutes from './routes/locationsRoutes.js';
+import locationsRoutes from './routes/citiesRoutes.js';
 import foodRoutes from './routes/foodRoutes.js';
 import booksRoutes from './routes/booksRoutes.js';
+import natureRoutes from './routes/natureRoutes.js';
 
 const { Pool } = pkg;
 dotenv.config();
@@ -33,6 +34,7 @@ app.use('/map-tiler', maptilerRoutes);
 app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
 app.use('/books', booksRoutes);
+app.use('/nature', natureRoutes);
 
 // Create a connection pool
 const pool = new Pool({

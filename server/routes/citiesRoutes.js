@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchCities } from '../controllers/locationsController.js';
+import { fetchCities } from '../controllers/citiesController.js';
 
 const router = express.Router();
 
