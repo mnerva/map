@@ -13,6 +13,7 @@ export async function initMap() {
     projection: 'globe',
     center: [0, 40],
     zoom: 2,
+    projectionControl: true,
   });
 
   return map;
@@ -38,6 +39,8 @@ let markersVisible = {
 
 export function toggleMarkers(map, items, type) {
   const markerColor = markerColors[type] || '#000000';
+  const sourceId = `${type}-markers`;
+  const layerId = `${type}-markers`;
 
   // Create GeoJSON data for the markers
   const geojson = {
@@ -56,36 +59,42 @@ export function toggleMarkers(map, items, type) {
 
   // Remove the existing layer if it's already visible
   if (markersVisible[type]) {
-    map.removeLayer(`${type}-markers`);
-    map.removeSource(`${type}-markers`);
+    if (map.getLayer(layerId)) map.removeLayer(layerId);
+    if (map.getSource(sourceId)) map.removeSource(sourceId);
     markersVisible[type] = false;
-  } else {
-    // Add a new layer for the markers
-    map.addSource(`${type}-markers`, {
-      type: 'geojson',
-      data: geojson,
-    });
-
-    map.addLayer({
-      id: `${type}-markers`,
-      type: 'circle',
-      source: `${type}-markers`,
-      paint: {
-        'circle-radius': 6,
-        'circle-color': markerColor,
-        'circle-opacity': 0.9,
-      },
-    });
-
-    markersVisible[type] = true;
-
-    // Add click event listener to show popups
-    map.on('click', `${type}-markers`, (e) => {
-      const feature = e.features[0];
-      const popup = new maptilersdk.Popup()
-        .setLngLat(feature.geometry.coordinates)
-        .setHTML(`<h3>${feature.properties.title}</h3>`)
-        .addTo(map);
-    });
+    return
   }
+  
+  // Ensure map style is loaded before adding
+  if (!map.isStyleLoaded()) {
+    map.once('styledata', () => toggleMarkers(map, items, type));
+    return;
+  }
+
+  // Add source + layer
+  map.addSource(sourceId, {
+    type: 'geojson',
+    data: geojson,
+  });
+
+  map.addLayer({
+    id: layerId,
+    type: 'circle',
+    source: sourceId,
+    paint: {
+      'circle-radius': 6,
+      'circle-color': markerColor,
+      'circle-opacity': 0.9,
+    },
+  });
+
+  markersVisible[type] = true;
+
+  map.on('click', layerId, (e) => {
+    const feature = e.features[0];
+    new maptilersdk.Popup()
+      .setLngLat(feature.geometry.coordinates)
+      .setHTML(`<h3>${feature.properties.title}</h3>`)
+      .addTo(map);
+  });
 }

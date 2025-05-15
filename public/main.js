@@ -26,7 +26,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       foodBtn.addEventListener('click', async () => {
         try {
           const foodPlaces = await fetchFoodPlaces();
-
           toggleMarkers(map, foodPlaces, 'food');
         } catch (err) {
           console.error('Failed to load cities:', err);
@@ -38,14 +37,12 @@ window.addEventListener('DOMContentLoaded', async () => {
       booksBtn.addEventListener('click', async () => {
         try {
           const books = await fetchBooks();
-
           toggleMarkers(map, books, 'books');
         } catch (err) {
           console.error('Failed to load cities:', err);
         }
       });
     }
-
   } catch (err) {
     console.error('Failed to initialize map:', err);
   }
