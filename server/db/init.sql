@@ -192,7 +192,7 @@ INSERT INTO public.locations (id, name, location_type, description, longitude, l
 (8, 'Madeira', 'city', NULL, -16.9595, 32.7607),
 (9, 'Pico Ruivo', 'nature', NULL, -16.9330, 32.7552),
 (10, 'Pico do Arieiro', 'nature', NULL, -16.9280, 32.7355),
-(11, 'Positano', 'city', NULL, 14.4842, 40.6281),
+(11, 'Positano', 'city', 'A small village in Italy.<br><a href=''https://en.wikipedia.org/wiki/Positano'' target=''_blank''>Read more</a>', 14.4842, 40.6281),
 (12, 'Cărturești Carusel', 'books', NULL, 26.1030, 44.4310);
 
 

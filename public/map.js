@@ -53,6 +53,7 @@ export function toggleMarkers(map, items, type) {
       },
       properties: {
         title: item.name,
+        description: item.description || '',
       },
     })),
   };
@@ -92,9 +93,19 @@ export function toggleMarkers(map, items, type) {
 
   map.on('click', layerId, (e) => {
     const feature = e.features[0];
+    const title = feature.properties.title;
+    const description = feature.properties.description || '';
+
+    const popupContent = `
+      <div>
+        <h3>${title}</h3>
+        ${description ? `<p>${description}</p>` : ''}
+      </div>
+    `;
+
     new maptilersdk.Popup()
       .setLngLat(feature.geometry.coordinates)
-      .setHTML(`<h3>${feature.properties.title}</h3>`)
+      .setHTML(popupContent)
       .addTo(map);
   });
 }
