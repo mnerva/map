@@ -11,12 +11,6 @@
 </head>
 <body>
   <div id="map-container">
-    <div id="buttons" class="buttons">
-      <button id="citiesBtn" class="filterBtn"><i class="fas fa-city"></i></button>
-      <button id="foodBtn" class="filterBtn"><i class="fas fa-utensils"></i></button>
-      <button id="booksBtn" class="filterBtn"><i class="fas fa-book"></i></button>
-      <button id="natureBtn" class="filterBtn"><i class="fas fa-mountain"></i></button>
-    </div>
     <select class="mapstyles-select">
       <optgroup label="Navigation and city exploration">
         <option value="STREETS" selected>STREETS</option>
@@ -34,6 +28,44 @@
         <option value="DATAVIZ.LIGHT">DATAVIZ.LIGHT</option>
       </optgroup>
     </select>
+
+    <div id="sidebarWrapper">
+      <div id="sidebar" class="sidebar" aria-hidden="true">
+        <div class="sidebarContent">
+          <h3>Choose a Category</h3>
+          <div class="accordion" data-type="cities">
+            <button class="accordion-toggle">Cities</button>
+            <div class="accordion-content"></div>
+          </div>
+      
+          <div class="accordion" data-type="food">
+            <button class="accordion-toggle">Food</button>
+            <div class="accordion-content"></div>
+          </div>
+      
+          <div class="accordion" data-type="books">
+            <button class="accordion-toggle">Books</button>
+            <div class="accordion-content"></div>
+          </div>
+      
+          <div class="accordion" data-type="nature">
+            <button class="accordion-toggle">Nature</button>
+            <div class="accordion-content"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="toggleSidebar">☰</button>
+
+    <div id="buttons" class="buttons">
+      <button id="citiesBtn" class="filterBtn"><i class="fas fa-city"></i></button>
+      <button id="foodBtn" class="filterBtn"><i class="fas fa-utensils"></i></button>
+      <button id="booksBtn" class="filterBtn"><i class="fas fa-book"></i></button>
+      <button id="natureBtn" class="filterBtn"><i class="fas fa-mountain"></i></button>
+    </div>
+
+    <div class="place-list" id="placeList"></div>
     <div id="map" style="height: 100vh;"></div>
   </div>
   <script type="module" src="./main.js"></script>
