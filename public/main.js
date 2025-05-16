@@ -114,7 +114,10 @@ window.addEventListener('DOMContentLoaded', async () => {
             items = await fetchNature();
           }
           content.innerHTML = items.map(item => `
-            <div class="place-item" data-lat="${item.latitude}" data-lng="${item.longitude}">${item.name}</div>
+            <div class="place-item" data-lat="${item.latitude}" data-lng="${item.longitude}">
+              <div class="place-item-name">${item.name}</div>
+              <div class="place-item-description" style="display: none;">${item.description}</div>
+            </div>
           `).join('');
           // Add click event listener to zoom to marker
           content.querySelectorAll('.place-item').forEach(placeItem => {
@@ -122,11 +125,18 @@ window.addEventListener('DOMContentLoaded', async () => {
               const lat = parseFloat(placeItem.dataset.lat);
               const lng = parseFloat(placeItem.dataset.lng);
 
-              // Use map.flyTo() to zoom to the marker
+              // Toggle the visibility of the description
+              const descriptionElement = placeItem.querySelector('.place-item-description');
+              const isVisible = descriptionElement.style.display === 'block';
+              content.querySelectorAll('.place-item-description').forEach(desc => {
+                desc.style.display = 'none';
+              });
+              descriptionElement.style.display = isVisible ? 'none' : 'block';
+
               map.flyTo({
                 center: [lng, lat],
-                zoom: 14, // Adjust zoom level as needed
-                essential: true // This ensures the animation works even if the user prefers reduced motion
+                zoom: 14,
+                essential: true
               });
             });
           });
