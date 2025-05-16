@@ -114,8 +114,22 @@ window.addEventListener('DOMContentLoaded', async () => {
             items = await fetchNature();
           }
           content.innerHTML = items.map(item => `
-            <div class="place-item">${item.name}</div>
+            <div class="place-item" data-lat="${item.latitude}" data-lng="${item.longitude}">${item.name}</div>
           `).join('');
+          // Add click event listener to zoom to marker
+          content.querySelectorAll('.place-item').forEach(placeItem => {
+            placeItem.addEventListener('click', (e) => {
+              const lat = parseFloat(placeItem.dataset.lat);
+              const lng = parseFloat(placeItem.dataset.lng);
+
+              // Use map.flyTo() to zoom to the marker
+              map.flyTo({
+                center: [lng, lat],
+                zoom: 14, // Adjust zoom level as needed
+                essential: true // This ensures the animation works even if the user prefers reduced motion
+              });
+            });
+          });
         }
       });
     });
