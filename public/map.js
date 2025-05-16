@@ -18,7 +18,6 @@ export async function initMap() {
 
   // Reset markersVisible when the style changes
   map.on('style.load', () => {
-    console.log('Map style changed, resetting markersVisible state...');
     Object.keys(markersVisible).forEach(type => {
       markersVisible[type] = false;
     });
@@ -109,15 +108,9 @@ export function toggleMarkers(map, items, type) {
   });
 
   items.forEach(item => {
-    console.log('Item:', item);
-    console.log('Polygon??:', item.polygon);
     if (item.polygon) {
-      console.log('Polygon:', item.polygon);
       const polygonSourceId = `polygon-${type}-${item.id}`;
       const polygonLayerId = `polygon-${type}-${item.id}`;
-
-      console.log('Adding polygon layer:', polygonLayerId);
-      console.log('Polygon source:', polygonSourceId);
 
       map.addSource(polygonSourceId, {
         type: 'geojson',
