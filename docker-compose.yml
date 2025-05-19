@@ -18,14 +18,15 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    environment:
-      DATABASE_URL: postgres://map_user:kjhkjh@db:5432/map_db
+    env_file:
+      - ./server/.env
     ports:
       - "8000:8000"
     networks:
       - map_network
     depends_on:
       - db
+
 
   frontend:
     build:
