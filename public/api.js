@@ -29,3 +29,20 @@ export async function fetchNature() {
   }
   return res.json();
 }
+
+export async function fetchSearch(query) {
+  if (!query || query.trim().length < 2) {
+    return [];
+  }
+
+  try {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+    if (!res.ok) {
+      throw new Error("Search request failed");
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Search fetch error:", error);
+    return [];
+  }
+}

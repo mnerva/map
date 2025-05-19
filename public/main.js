@@ -1,5 +1,5 @@
 import { initMap, toggleMarkers } from './map.js';
-import { fetchCities, fetchFoodPlaces, fetchBooks, fetchNature } from './api.js';
+import { fetchCities, fetchFoodPlaces, fetchBooks, fetchNature, fetchSearch } from './api.js';
 
 let map;
 
@@ -12,10 +12,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     const booksBtn = document.getElementById('booksBtn');
     const natureBtn = document.getElementById('natureBtn');
     const mapStyle = document.querySelector('.mapstyles-select')
+
     const toggle = document.querySelector('#toggleSidebar');
     const sidebar = document.getElementById('sidebar');
     const wrapper = document.querySelector('#sidebarWrapper');
     const filterButtons = document.querySelectorAll('.buttons');
+
+    const searchInput = document.getElementById("search");
+    const suggestionsList = document.getElementById("suggestions");
   
     if (citiesBtn) {
       citiesBtn.addEventListener('click', async () => {
@@ -143,6 +147,56 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
       });
     });
+
+    let debounceTimeout;
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim();
+    
+      clearTimeout(debounceTimeout);
+
+      if (query.length < 2) {
+        suggestionsList.innerHTML = "";
+        return;
+      }
+    
+      debounceTimeout = setTimeout(async () => {
+        const results = await fetchSearch(query);
+        showSuggestions(results);
+      }, 300);
+    });
+    
+    function showSuggestions(data) {
+      console.log('data: ', data);
+
+      suggestionsList.innerHTML = "";
+    
+      if (data.length === 0) {
+        suggestionsList.innerHTML = "<li>No results found</li>";
+        return;
+      }
+    
+      data.forEach(place => {
+        const li = document.createElement("li");
+        li.textContent = `${place.name}`;
+        li.dataset.lng = place.longitude;
+        li.dataset.lat = place.latitude;
+        console.log('created the li: ', li);
+
+        li.addEventListener("click", () => {
+          const lat = parseFloat(li.dataset.lat);
+          const lng = parseFloat(li.dataset.lng);
+          console.log('heard the click form the suggestion');
+          suggestionsList.innerHTML = "";
+          searchInput.value = place.name;
+          map.flyTo({ 
+            center: [lng, lat], 
+            zoom: 14 
+          });
+        });
+        suggestionsList.appendChild(li);
+      });
+    }
   } catch (err) {
     console.error('Failed to initialize map:', err);
   }
