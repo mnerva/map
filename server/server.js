@@ -9,6 +9,7 @@ import locationsRoutes from './routes/citiesRoutes.js';
 import foodRoutes from './routes/foodRoutes.js';
 import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
 
 const { Pool } = pkg;
 dotenv.config();
@@ -35,6 +36,7 @@ app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
 app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
+app.use('/search', searchRoutes)
 
 // Create a connection pool
 const pool = new Pool({
