@@ -1,8 +1,9 @@
 # === Build backend ===
 FROM node:20 AS backend-build
 WORKDIR /app/server
-COPY ./server ./server
+COPY ./server/package.json ./ 
 RUN npm install
+COPY ./server ./
 
 # === Build final image ===
 FROM nginx:alpine
