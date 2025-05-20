@@ -31,6 +31,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Use routes
+console.log("in server.js");
 app.use('/map-tiler', maptilerRoutes);
 app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
