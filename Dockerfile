@@ -1,8 +1,7 @@
 # === Build backend ===
 FROM node:20 AS backend-build
-WORKDIR /app
-COPY ./server ./server
 WORKDIR /app/server
+COPY ./server ./server
 RUN npm install
 
 # === Build final image ===
@@ -23,8 +22,7 @@ RUN apk add --no-cache nodejs npm
 # Set backend working dir
 WORKDIR /server
 
-# RUN npm install
-
+# Expose port
 EXPOSE 80
 
 # Start both backend and nginx
