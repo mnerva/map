@@ -43,6 +43,8 @@ app.use('/search', searchRoutes)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+console.log('DATABASE_URL =', process.env.DATABASE_URL);
+
 
 // Test the connection to the database
 pool.connect()
