@@ -11,6 +11,9 @@ import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 
+console.log('✅ Backend started and running...');
+
+
 const { Pool } = pkg;
 dotenv.config();
 
@@ -39,11 +42,20 @@ app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
 app.use('/search', searchRoutes)
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+}); 
+
+process.on('unhandledRejection', function (reason, promise) {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+console.log('DATABASE_URL =', process.env.DATABASE_URL);
+
 // Create a connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
-console.log('DATABASE_URL =', process.env.DATABASE_URL);
 
 
 // Test the connection to the database
