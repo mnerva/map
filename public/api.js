@@ -1,5 +1,5 @@
 export async function fetchCities() {
-  const res = await fetch('/cities');
+  const res = await fetch('/api/cities');
   if (!res.ok) {
     throw new Error('Failed to fetch cities');
   }
