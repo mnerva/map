@@ -11,12 +11,8 @@ import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 
-console.log('✅ Backend started and running...');
-
-
 const { Pool } = pkg;
 if (process.env.NODE_ENV !== 'production') {
-  console.log("Current NODE_ENV:", process.env.NODE_ENV);
   dotenv.config();
 }
 
@@ -37,7 +33,6 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Use routes
-console.log("in server.js");
 app.use('/map-tiler', maptilerRoutes);
 app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
@@ -52,8 +47,6 @@ process.on('uncaughtException', function (err) {
 process.on('unhandledRejection', function (reason, promise) {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
-
-console.log('DATABASE_URL =', process.env.DATABASE_URL);
 
 // Create a connection pool
 const pool = new Pool({

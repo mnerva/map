@@ -76,7 +76,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (toggle) {
       toggle.addEventListener('click', () => {
-        console.log('Toggle sidebar clicked');
         const isOpen = wrapper.classList.contains('open');
         wrapper.classList.toggle('open');
         sidebar.setAttribute('aria-hidden', isOpen);

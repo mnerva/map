@@ -1,6 +1,5 @@
 export async function initMap() {
   const res = await fetch('/api/map-tiler');
-  console.log('res', res);
   if (!res.ok) {
     throw new Error('Failed to fetch API key');
   }
