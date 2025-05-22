@@ -15,7 +15,10 @@ console.log('✅ Backend started and running...');
 
 
 const { Pool } = pkg;
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  console.log("Current NODE_ENV:", process.env.NODE_ENV);
+  dotenv.config();
+}
 
 const app = express();
 const port = 8000;
