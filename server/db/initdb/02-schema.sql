@@ -94,7 +94,7 @@ INSERT INTO public.locations (id, name, location_type, description, longitude, l
               47.37251396079404, 8.540736836665445
               47.372903706869124))', 4326)),
 (4, 'Bergen', 'city', 'The second-largest city in Norway.<br><a href=''https://en.wikipedia.org/wiki/Bergen'' target=''_blank''>Read more</a>', 5.3167, 60.4, NULL),
-(5, 'Ler Devagar', 'books', 'One o, f the 10 most beautiful bookstores.<br><a href=''https://lerdevagar.com/en/historia/'' target=''_blank''>Read more</a>', -9.1786, 38.7035, NULL),
+(5, 'Ler Devagar', 'books', 'One of the 10 most beautiful bookstores.<br><a href=''https://lerdevagar.com/en/historia/'' target=''_blank''>Read more</a>', -9.1786, 38.7035, NULL),
 (6, 'Livraria Lello', 'books', 'A bookstore in Porto, Portugal.<br><a href=''https://en.wikipedia.org/wiki/Livraria_Lello'' target=''_blank''>Read more</a>', -8.6149, 41.1466, NULL),
 (7, 'Madeira', 'city', 'A beautiful region of Portugal.<br><a href=''https://en.wikipedia.org/wiki/Madeira'' target=''_blank''>Read more</a>', -16.9595, 32.7607, NULL),
 (8, 'Pico Ruivo', 'nature', 'The highest peak on Madeira Island.<br><a href=''https://en.wikipedia.org/wiki/Pico_Ruivo'' target=''_blank''>Read more</a>', -16.9330, 32.7552, NULL),
