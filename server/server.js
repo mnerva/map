@@ -40,16 +40,7 @@ app.use('/food', foodRoutes);
 app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
 app.use('/search', searchRoutes);
-app.use('/download-logs', (req, res, next) => {
-  // Only allow GET with Basic Auth
-  const auth = req.headers.authorization || '';
-  const expected = 'Basic ' + Buffer.from(`${process.env.LOGS_AUTH_USER}:${process.env.LOGS_AUTH_PASS}`).toString('base64');
-  if (auth !== expected) {
-    res.set('WWW-Authenticate', 'Basic realm="Logs"');
-    return res.status(401).send('Unauthorized');
-  }
-  next();
-}, logsRoutes);
+app.use('/download-logs', logsRoutes);
 
 process.on('uncaughtException', function (err) {
   console.log(err);
