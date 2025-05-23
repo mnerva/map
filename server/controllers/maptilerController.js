@@ -1,3 +1,4 @@
 export const getMapTilerKey = (req, res) => {
-  res.json({ apiKey: process.env.MAPTILER_API_KEY });
+  const key = process.env.MAPTILER_API_KEY;
+  res.json({ apiKey: key });
 };
