@@ -3,6 +3,7 @@ export const downloadLogs = async (req, res) => {
   const expected = 'Basic ' + Buffer.from(`${process.env.LOGS_AUTH_USER}:${process.env.LOGS_AUTH_PASS}`).toString('base64');
 
   if (auth !== expected) {
+    res.set('WWW-Authenticate', 'Basic realm="Logs"');
     return res.status(401).send('Unauthorized');
   }
 
