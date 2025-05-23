@@ -10,6 +10,7 @@ import foodRoutes from './routes/foodRoutes.js';
 import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
+import logsRoutes from './routes/logsRoutes.js';
 
 const { Pool } = pkg;
 if (process.env.NODE_ENV !== 'production') {
@@ -38,7 +39,8 @@ app.use('/cities', locationsRoutes);
 app.use('/food', foodRoutes);
 app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
-app.use('/search', searchRoutes)
+app.use('/search', searchRoutes);
+app.use('/download-logs', logsRoutes);
 
 process.on('uncaughtException', function (err) {
   console.log(err);
