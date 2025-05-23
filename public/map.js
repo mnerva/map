@@ -19,10 +19,18 @@ export async function initMap() {
   // Reset markersVisible when the style changes
   map.on('style.load', () => {
     Object.keys(markersVisible).forEach(type => {
-      markersVisible[type] = false;
+      if (markersVisible[type]) {
+        markersVisible[type] = false;
+        if (!map.isStyleLoaded()) {
+          map.once('style.load', () => {
+            toggleMarkers(map, markers[type], type);
+          });
+        } else {
+          toggleMarkers(map, markers[type], type);
+        }
+      };
     });
   });
-  
   return map;
 }
 
@@ -48,6 +56,10 @@ let markersVisible = {
 };
 
 export function toggleMarkers(map, items, type) {
+  // Only add markers if they are not already present
+  if (markers[type].length === 0) {
+    markers[type] = items;
+  }
   const markerColor = markerColors[type] || '#000000';
   const sourceId = `${type}-markers`;
   const layerId = `${type}-markers`;
@@ -86,7 +98,21 @@ export function toggleMarkers(map, items, type) {
   
   // Ensure map style is loaded before adding
   if (!map.isStyleLoaded()) {
-    map.once('styledata', () => toggleMarkers(map, items, type));
+    let retryCount = 0;
+    const maxRetries = 60;
+
+    const waitUntilLoaded = () => {
+      if (!map.isStyleLoaded()) {
+        if (++retryCount > maxRetries) {
+          console.warn('Map style failed to load after multiple attempts.');
+          return;
+        }
+        requestAnimationFrame(waitUntilLoaded);
+      } else {
+        toggleMarkers(map, items, type);
+      }
+    }
+    waitUntilLoaded();
     return;
   }
 
