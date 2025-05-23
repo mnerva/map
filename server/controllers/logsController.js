@@ -1,6 +1,4 @@
 export const downloadLogs = async (req, res) => {
-  console.log('Download controller hit');
-  console.error('You hit the controller');
 
   const auth = req.headers.authorization || '';
   const expected = 'Basic ' + Buffer.from(`${process.env.LOGS_AUTH_USER}:${process.env.LOGS_AUTH_PASS}`).toString('base64');
