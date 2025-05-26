@@ -71,3 +71,24 @@ export const downloadLogs = async (req, res) => {
     res.json({ files });
   });
 };
+
+export const deleteLogFile = async (req, res) => {
+  const auth = req.headers.authorization || '';
+  const expected = 'Basic ' + Buffer.from(`${process.env.LOGS_AUTH_USER}:${process.env.LOGS_AUTH_PASS}`).toString('base64');
+
+  if (auth !== expected) {
+    res.set('WWW-Authenticate', 'Basic realm="Logs"');
+    return res.status(401).send('Unauthorized');
+  }
+
+  const logFilePath = '/tmp/access.log';
+
+  fs.unlink(logFilePath, (err) => {
+    if (err) {
+      console.error('Failed to delete raw log file:', err);
+      return res.status(500).send('Error deleting log file');
+    }
+    console.log('Raw log file deleted');
+    res.status(200).send({ message: 'Raw log file deleted successfully' });
+  });
+}
