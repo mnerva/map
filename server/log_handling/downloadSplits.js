@@ -1,7 +1,7 @@
 import fs from "fs";
 import https from "https";
 
-function downloadFile(fileUrl, localPath, authHeader) {
+export function downloadFile(fileUrl, localPath, authHeader) {
   return new Promise((resolve, reject) => {
     // Make HTTPS GET request with Authorization header
     const req = https.get(fileUrl, { headers: { Authorization: authHeader } }, res => {
