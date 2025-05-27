@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           const cities = await fetchCities();
           toggleMarkers(map, cities, 'city');
         } catch (err) {
-          console.error('Failed to load cities:', err);
+          showNotification('Unable to load cities at the moment. Please try again later.');
         }
       });
     }
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           const foodPlaces = await fetchFoodPlaces();
           toggleMarkers(map, foodPlaces, 'food');
         } catch (err) {
-          console.error('Failed to load food:', err);
+          showNotification('Unable to load food places at the moment. Please try again later.');
         }
       });
     }
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           const books = await fetchBooks();
           toggleMarkers(map, books, 'books');
         } catch (err) {
-          console.error('Failed to load books:', err);
+          showNotification('Unable to load book places at the moment. Please try again later.');
         }
       });
     }
@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           const nature = await fetchNature();
           toggleMarkers(map, nature, 'nature');
         } catch (err) {
-          console.error('Failed to load nature:', err);
+          showNotification('Unable to load nature places at the moment. Please try again later.');
         }
       });
     }
@@ -166,8 +166,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
     
     function showSuggestions(data) {
-      console.log('data: ', data);
-
       suggestionsList.innerHTML = "";
     
       if (data.length === 0) {
@@ -180,12 +178,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         li.textContent = `${place.name}`;
         li.dataset.lng = place.longitude;
         li.dataset.lat = place.latitude;
-        console.log('created the li: ', li);
 
         li.addEventListener("click", () => {
           const lat = parseFloat(li.dataset.lat);
           const lng = parseFloat(li.dataset.lng);
-          console.log('heard the click form the suggestion');
           suggestionsList.innerHTML = "";
           searchInput.value = place.name;
           map.flyTo({ 
@@ -197,6 +193,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       });
     }
   } catch (err) {
-    console.error('Failed to initialize map:', err);
+    showNotification('Unable to load map at the moment. Please try again later.');
   }
 });

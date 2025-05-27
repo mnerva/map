@@ -42,7 +42,6 @@ export async function fetchSearch(query) {
     }
     return await res.json();
   } catch (error) {
-    console.error("Search fetch error:", error);
     return [];
   }
 }

@@ -104,7 +104,6 @@ export function toggleMarkers(map, items, type) {
     const waitUntilLoaded = () => {
       if (!map.isStyleLoaded()) {
         if (++retryCount > maxRetries) {
-          console.warn('Map style failed to load after multiple attempts.');
           return;
         }
         requestAnimationFrame(waitUntilLoaded);
