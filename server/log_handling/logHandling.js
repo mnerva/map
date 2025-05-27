@@ -7,31 +7,65 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 // Main function to handle downloading logs and slicing them into separate files by date
 export async function handleDownloadAndSlice() {
-  const url = 'https://map-a363.onrender.com/api/downloadLogs';
+  try {
+    const url = 'https://map-a363.onrender.com/api/downloadLogs';
 
-  // Get authentication credentials from environment variables
-  const username =  process.env.LOGS_AUTH_USER;
-  const password =  process.env.LOGS_AUTH_PASS;
+    // Get authentication credentials from environment variables
+    const username =  process.env.LOGS_AUTH_USER;
+    const password =  process.env.LOGS_AUTH_PASS;
 
-  const res = await fetch(url, {
-    headers: {
-      Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
-    },
-  });
+    if (!username || !password) {
+      throw new Error('Missing LOGS_AUTH_USER or LOGS_AUTH_PASS environment variables.');
+    }
 
-  const logData = await res.text();
+    const res = await fetch(url, {
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
+      },
+    });
 
-  const slicedLogs = sliceLogsByDate(logData);
+    // Handle when response is empty or not ok
+    if (!res.ok) {
+      throw new Error(`Failed to fetch logs: ${res.status} ${res.statusText}`);
+    }
 
-  // Define the local folder to save the sliced log files
-  const logsFolder = path.join(__dirname, '../logs');
-  // Create the logs folder if it doesn’t already exist
-  if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder);
+    const logData = await res.text();
+    console.log('Fetched log data length:', logData.length);
 
-  // Write each date group of logs into a separate file
-  for (const [date, lines] of Object.entries(slicedLogs)) {
-    const filePath = path.join(logsFolder, `access-${date}.log`);
-    fs.writeFileSync(filePath, lines.join('\n'));
+    if (!logData.trim()) {
+      throw new Error('Fetched logs are empty.');
+    }
+
+    const slicedLogs = sliceLogsByDate(logData);
+    const dates = Object.keys(slicedLogs);
+    console.log('Dates found in logs:', dates);
+
+    if (dates.length === 0) {
+      throw new Error('No valid log entries found for any date.');
+    }
+
+    // Define the local folder to save the sliced log files
+    const logsFolder = path.join(__dirname, '../logs');
+    // Create the logs folder if it doesn’t already exist
+    try {
+      if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder);
+    } catch (err) {
+      throw new Error(`Failed to create logs folder: ${err.message}`);
+    }
+
+    // Write each date group of logs into a separate file
+    for (const [date, lines] of Object.entries(slicedLogs)) {
+      const filePath = path.join(logsFolder, `access-${date}.log`);
+      try {
+        fs.writeFileSync(filePath, lines.join('\n'));
+        console.log(`Wrote log file: ${filePath} (${lines.length} lines)`);
+      } catch (err) {
+        console.error(`Failed to write log file for ${date}: ${err.message}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error downloading or slicing logs:', error);
+    throw error; // Re-throw to handle it in the calling function
   }
 }
 
