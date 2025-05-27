@@ -44,10 +44,12 @@ app.use('/search', searchRoutes);
 app.use('/downloadLogs', logsRoutes);
 
 process.on('uncaughtException', function (err) {
+  console.error('Uncaught Exception:', err);
   process.exit(1);
 }); 
 
 process.on('unhandledRejection', function (reason, promise) {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 

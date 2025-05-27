@@ -1,4 +1,6 @@
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Schedule every 3 minutes
 setInterval(async () => {
