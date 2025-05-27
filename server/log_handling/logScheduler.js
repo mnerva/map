@@ -4,6 +4,9 @@ import fetch from 'node-fetch';
 setInterval(async () => {
   try {
     console.log(`[${new Date().toISOString()}] Calling /downloadLogs endpoint`);
+
+    const username =  process.env.LOGS_AUTH_USER;
+    const password =  process.env.LOGS_AUTH_PASS;
     
     const res = await fetch('https://map-a363.onrender.com/api/downloadLogs', {
       headers: {
