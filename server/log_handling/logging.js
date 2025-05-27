@@ -2,8 +2,8 @@ import dotenv from 'dotenv';
 import fs from "fs";
 import path from "path";
 import cron from "node-cron";
-import splitLogsByDate from "./splitLogs";
-import downloadFile from "./downloadSplits";
+import splitLogsByDate from "./splitLogs.js";
+import downloadFile from "./downloadSplits.js";
 
 dotenv.config();
 
