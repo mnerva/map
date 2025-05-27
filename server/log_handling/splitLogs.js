@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-function splitLogsByDate(logFilePath, outputDir) {
+export default function splitLogsByDate(logFilePath, outputDir) {
   // Check if the source log file exists
   if (!fs.existsSync(logFilePath)) {
     console.error("Log file does not exist:", logFilePath);
@@ -47,5 +47,3 @@ function splitLogsByDate(logFilePath, outputDir) {
   files.forEach(stream => stream.end());
   return [...files.keys()];
 }
-
-module.exports = splitLogsByDate;
