@@ -21,34 +21,37 @@ if (!fs.existsSync(localDownloadDir)) fs.mkdirSync(localDownloadDir, { recursive
 
 
 cron.schedule("*/3 * * * *", async () => {
-  // Split the logs on the server
-  const dates = splitLogsByDate(logFilePath, tempSplitDir);
+  try {
+    console.log("Running cron job to split and download logs...");
+    // Split the logs on the server
+    const dates = splitLogsByDate(logFilePath, tempSplitDir);
 
-  // Check if the split logs were created
-  if (dates === null) {
-    console.warn("No log file to process.");
-    return;
-  }
-
-  // Download split logs into local folder
-  for (const date of dates) {
-    const fileUrl = `https://map-a363.onrender.com/tmp/split-logs/${date}.log`;
-    const localFile = path.join(localDownloadDir, `${date}.log`);
-
-    try {
-      await downloadFile(fileUrl, localFile, authHeader);
-      console.log(`Downloaded: ${localFile}`);
-    } catch (err) {
-      console.error(err);
+    // Check if the split logs were created
+    if (dates === null) {
+      console.warn("No log file to process.");
+      return;
     }
+
+    // Download split logs into local folder
+    for (const date of dates) {
+      const fileUrl = `https://map-a363.onrender.com/tmp/split-logs/${date}.log`;
+      const localFile = path.join(localDownloadDir, `${date}.log`);
+
+      try {
+        await downloadFile(fileUrl, localFile, authHeader);
+        console.log(`Downloaded: ${localFile}`);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    if (fs.existsSync(logFilePath)) {
+      // Delete original log file
+      fs.unlinkSync(logFilePath);
+      console.log("Original log file deleted.");
+    }
+  } catch(err) {
+    console.error("Error in cron job:", err);
   }
 
-  if (fs.existsSync(logFilePath)) {
-    // Delete original log file
-    fs.unlinkSync(logFilePath);
-    console.log("Original log file deleted.");
-  }
-
-}).catch(err => {
-  console.error("Error in cron job:", err);
 })
