@@ -85,10 +85,8 @@ export const deleteLogFile = async (req, res) => {
 
   fs.unlink(logFilePath, (err) => {
     if (err) {
-      console.error('Failed to delete raw log file:', err);
       return res.status(500).send('Error deleting log file');
     }
-    console.log('Raw log file deleted');
     res.status(200).send({ message: 'Raw log file deleted successfully' });
   });
 }

@@ -18,7 +18,6 @@ export const fetchSearch = async (req, res) => {
     );
     res.json(result.rows);
   } catch (error) {
-    console.error("Error fetching search:", error);
     res.status(500).json({ error: "Failed to fetch search" });
   }
 };

@@ -10,6 +10,7 @@ import foodRoutes from './routes/foodRoutes.js';
 import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
+import logsRoutes from './routes/logsRoutes.js';
 import deleteLogsRoutes from './routes/deleteLogsRoutes.js';
 
 const { Pool } = pkg;
@@ -40,14 +41,15 @@ app.use('/food', foodRoutes);
 app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
 app.use('/search', searchRoutes);
+app.use('/downloadLogs', logsRoutes);
 app.use('/downloadLogs/deleteLog', deleteLogsRoutes);
 
 process.on('uncaughtException', function (err) {
-  console.log(err);
+  process.exit(1);
 }); 
 
 process.on('unhandledRejection', function (reason, promise) {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
 });
 
 // Create a connection pool
@@ -56,17 +58,15 @@ const pool = new Pool({
 });
 
 
-// Test the connection to the database
+// Connecting to the database
 pool.connect()
-  .then(() => {
-    console.log('Connected to the database');
+  .then(client => {
+    console.log('Database connection successful');
+    client.release();
   })
   .catch(err => {
-    console.error('Error connecting to the database:', err);
+    console.error('Database connection failed');
+    process.exit(1);
   });
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on http://0.0.0.0:${port}`);
-});
 
 export default pool;
