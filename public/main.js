@@ -1,5 +1,6 @@
 import { initMap, toggleMarkers } from './map.js';
 import { fetchCities, fetchFoodPlaces, fetchBooks, fetchNature, fetchSearch } from './api.js';
+import { showNotification } from './notification.js';
 
 let map;
 

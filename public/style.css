@@ -250,3 +250,18 @@ body {
 .suggestions-list li:hover {
   background-color: #f0f0f0;
 }
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 14px;
+  transition: opacity 0.3s ease;
+}
