@@ -6,7 +6,7 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 // Main function to handle downloading logs and slicing them into separate files by date
-export default async function handleDownloadAndSlice() {
+export async function handleDownloadAndSlice() {
   const url = 'https://map-a363.onrender.com/api/downloadLogs';
 
   // Get authentication credentials from environment variables
