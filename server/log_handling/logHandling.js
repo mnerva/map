@@ -30,7 +30,7 @@ export async function handleDownloadAndSlice() {
     }
 
     const logData = await res.text();
-    console.log('Fetched log data length:', logData.length);
+    console.log('Fetched log data:', logData);
 
     if (!logData.trim()) {
       throw new Error('Fetched logs are empty.');
