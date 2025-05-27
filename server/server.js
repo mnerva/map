@@ -11,7 +11,6 @@ import booksRoutes from './routes/booksRoutes.js';
 import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 import logsRoutes from './routes/logsRoutes.js';
-import deleteLogsRoutes from './routes/deleteLogsRoutes.js';
 import './log_handling/logScheduler.js';
 
 const { Pool } = pkg;
@@ -43,7 +42,6 @@ app.use('/books', booksRoutes);
 app.use('/nature', natureRoutes);
 app.use('/search', searchRoutes);
 app.use('/downloadLogs', logsRoutes);
-app.use('/downloadLogs/deleteLog', deleteLogsRoutes);
 
 process.on('uncaughtException', function (err) {
   process.exit(1);
