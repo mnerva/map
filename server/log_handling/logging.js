@@ -1,9 +1,14 @@
 import dotenv from 'dotenv';
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import cron from "node-cron";
 import splitLogsByDate from "./splitLogs.js";
 import downloadFile from "./downloadSplits.js";
+
+// Recreate __dirname in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
