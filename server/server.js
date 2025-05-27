@@ -12,7 +12,7 @@ import natureRoutes from './routes/natureRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
 import logsRoutes from './routes/logsRoutes.js';
 import deleteLogsRoutes from './routes/deleteLogsRoutes.js';
-import './log_handling/logging.js';
+import './log_handling/logScheduler.js';
 
 const { Pool } = pkg;
 if (process.env.NODE_ENV !== 'production') {
