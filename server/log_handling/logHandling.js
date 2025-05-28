@@ -10,14 +10,14 @@ export async function handleDownloadAndSlice() {
   const logFilePath = '/tmp/access.log';
 
   if (!fs.existsSync(logFilePath)) {
-    return res.status(404).send('Log file not found on server');
+    throw new Error('Log file not found');
   }
 
   try {
     const logData = fs.readFileSync(logFilePath, 'utf-8');
 
     if (!logData.trim()) {
-      return res.status(400).send('Log file is empty');
+      throw new Error('Log file is empty');
     }
 
     const slicedLogs = sliceLogsByDate(logData);
@@ -30,12 +30,21 @@ export async function handleDownloadAndSlice() {
     }
 
     // Define the local folder to save the sliced log files
-    const logsFolder = path.join(__dirname, '../logs');
+    const logsFolder = path.join('/tmp/logs');
+
     // Create the logs folder if it doesn’t already exist
     try {
       if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder);
     } catch (err) {
       throw new Error(`Failed to create logs folder: ${err.message}`);
+    }
+
+    // Check write permission
+    try {
+      fs.accessSync(logsFolder, fs.constants.W_OK);
+      console.log('Logs folder is writable');
+    } catch (err) {
+      console.error('Logs folder is not writable:', err.message);
     }
 
     // Write each date group of logs into a separate file

@@ -6,6 +6,6 @@ export async function downloadLogs(req, res) {
     res.status(200).json({ message: 'Logs downloaded and sliced successfully' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Failed to process logs' });
+    res.status(400).json({ message: 'Failed to process logs' });
   }
 }
