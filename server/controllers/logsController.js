@@ -2,6 +2,7 @@ import { handleDownloadAndSlice, listLogFiles, sendLogFile } from '../log_handli
 import fs from 'fs';
 
 export async function downloadLogs(req, res) {
+  console.log('downloadLogs called');
   try {
     await handleDownloadAndSlice();
     res.status(200).json({ message: 'Logs downloaded and sliced successfully' });
@@ -12,6 +13,7 @@ export async function downloadLogs(req, res) {
 }
 
 export async function slicedLogs(req, res) {
+  console.log('slicedLogs called');
   const logsFolder = process.env.LOGS_FOLDER;
   try {
     const files = await listLogFiles(logsFolder);
@@ -23,6 +25,7 @@ export async function slicedLogs(req, res) {
 }
 
 export async function downloadLogFile(req, res) {
+  console.log('downloadLogFile called');
   try {
     await sendLogFile(req, res);
   } catch (err) {
