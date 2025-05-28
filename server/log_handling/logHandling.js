@@ -93,7 +93,11 @@ export async function handleDownloadAndSlice() {
       console.log('downloadUrl:', downloadUrl);
 
       try {
-        const fileRes = await fetch(downloadUrl);
+        const fileRes = await fetch(downloadUrl, {
+          headers: {
+            Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
+          },
+        });
         if (!fileRes.ok) {
           console.error(`Failed to download ${filename}: ${fileRes.status} ${fileRes.statusText}`);
           return;
