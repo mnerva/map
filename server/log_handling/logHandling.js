@@ -88,13 +88,17 @@ export async function handleDownloadAndSlice() {
     }
 
     for (const filename of files) {
-      const downloadUrl = `https://map-a363.onrender.com/api/downloadLogFile/${filename}`;
+      const downloadUrl = `https://map-a363.onrender.com/api/slicedLogFiles/${filename}`;
       const localPath = path.join(localLogFilePath, filename);
 
-      const fileRes = await fetch(downloadUrl);
-      if (!fileRes.ok) {
-        console.error(`Failed to download ${filename}: ${fileRes.statusText}`);
-        continue;
+      try {
+        const fileRes = await fetch(downloadUrl);
+        if (!fileRes.ok) {
+          console.error(`Failed to download ${filename}: ${fileRes.status} ${fileRes.statusText}`);
+          return;
+        }
+      } catch (err) {
+          console.error(`Failed to download ${filename}: ${err.message}`);
       }
 
       try {
@@ -145,6 +149,7 @@ function sliceLogsByDate(logData) {
 export async function listLogFiles(logsFolder) {
   try {
     const files = await fs.promises.readdir(logsFolder);
+    console.log('Log files found in listLogFiles:', files);
     return files;
   } catch (err) {
     throw new Error('Failed to list log files');
@@ -155,6 +160,7 @@ export async function sendLogFile(req, res) {
   const logsFolder = process.env.LOGS_FOLDER;
   try {
     const { filename } = req.params;
+    console.log('Requested filename:', filename);
 
     // Validate filename
     if (!filename || filename.includes('..') || filename.includes('/')) {
@@ -162,7 +168,9 @@ export async function sendLogFile(req, res) {
     }
 
     const filePath = path.join(logsFolder, filename);
+    console.log('filePath:', filePath);
 
+    // Check if the file exists
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ message: 'Log file not found' });
     }
