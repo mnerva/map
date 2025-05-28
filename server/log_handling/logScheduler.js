@@ -15,8 +15,7 @@ setInterval(async () => {
         Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
       },
     });
-    console.log('res', res)
-    
+        
     const data = await res.text();
     console.log('Response data:', data);
     

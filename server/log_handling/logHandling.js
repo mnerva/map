@@ -31,10 +31,11 @@ export async function handleDownloadAndSlice() {
 
     // Define the local folder to save the sliced log files
     const logsFolder = path.join('/tmp/logs');
+    console.log("Writing logs to:", path.resolve(logsFolder));
 
     // Create the logs folder if it doesn’t already exist
     try {
-      if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder);
+      if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder, { recursive: true });;
     } catch (err) {
       throw new Error(`Failed to create logs folder: ${err.message}`);
     }
