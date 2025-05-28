@@ -90,6 +90,7 @@ export async function handleDownloadAndSlice() {
     for (const filename of files) {
       const downloadUrl = `https://map-a363.onrender.com/api/slicedLogFiles/${filename}`;
       const localPath = path.join(localLogFilePath, filename);
+      console.log('downloadUrl:', downloadUrl);
 
       try {
         const fileRes = await fetch(downloadUrl);
