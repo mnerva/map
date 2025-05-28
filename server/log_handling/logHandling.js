@@ -8,7 +8,6 @@ import { promisify } from 'util';
 const streamPipeline = promisify(pipeline);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const logsFolder = process.env.LOGS_FOLDER;
 
 // Main function to handle downloading logs and slicing them into separate files by date
 export async function handleDownloadAndSlice() {
@@ -17,6 +16,7 @@ export async function handleDownloadAndSlice() {
   const localLogFilePath = path.join(__dirname, 'logs');
   const username =  process.env.LOGS_AUTH_USER;
   const password =  process.env.LOGS_AUTH_PASS;
+  const logsFolder = process.env.LOGS_FOLDER;
 
   if (!fs.existsSync(logFilePath)) {
     throw new Error('Log file not found');
