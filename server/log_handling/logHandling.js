@@ -2,12 +2,21 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { pipeline } from 'stream';
+import { promisify } from 'util';
 
+const streamPipeline = promisify(pipeline);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const logsFolder = process.env.LOGS_FOLDER;
+
 // Main function to handle downloading logs and slicing them into separate files by date
 export async function handleDownloadAndSlice() {
   const logFilePath = '/tmp/access.log';
+  // Local folder to store downloaded files
+  const localLogFilePath = path.join(__dirname, 'logs');
+  const username =  process.env.LOGS_AUTH_USER;
+  const password =  process.env.LOGS_AUTH_PASS;
 
   if (!fs.existsSync(logFilePath)) {
     throw new Error('Log file not found');
@@ -29,10 +38,6 @@ export async function handleDownloadAndSlice() {
       throw new Error('No valid log entries found for any date.');
     }
 
-    // Define the local folder to save the sliced log files
-    const logsFolder = path.join('/tmp/logs');
-    console.log("Writing logs to:", path.resolve(logsFolder));
-
     // Create the logs folder if it doesn’t already exist
     try {
       if (!fs.existsSync(logsFolder)) fs.mkdirSync(logsFolder, { recursive: true });;
@@ -52,12 +57,55 @@ export async function handleDownloadAndSlice() {
     for (const [date, lines] of Object.entries(slicedLogs)) {
       const filePath = path.join(logsFolder, `access-${date}.log`);
       try {
-        fs.writeFileSync(filePath, lines.join('\n'));
+        fs.promises.writeFile(filePath, lines.join('\n'));
         console.log(`Wrote log file: ${filePath} (${lines.length} lines)`);
       } catch (err) {
         console.error(`Failed to write log file for ${date}: ${err.message}`);
       }
     }
+
+    // Fetch sliced log files from the server
+    // Using external fetch so in the future would be easier to switch to a different server
+    const res = await fetch('https://map-a363.onrender.com/api/slicedLogFiles', {
+      headers: {
+        Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch sliced log files: ${res.statusText}`);
+    }
+
+    const files = await res.json();
+    if (!Array.isArray(files) || files.length === 0) {
+      throw new Error('No log files found on server.');
+    }
+    console.log(`Found ${files.length} log files:`, files);
+
+    // Ensure the local log file path exists
+    if (!fs.existsSync(localLogFilePath)) {
+      fs.mkdirSync(localLogFilePath, { recursive: true });
+      console.log(`Created local folder ${localLogFilePath}`);
+    }
+
+    for (const filename of files) {
+      const downloadUrl = `https://map-a363.onrender.com/api/downloadLogFile/${filename}`;
+      const localPath = path.join(localLogFilePath, filename);
+
+      const fileRes = await fetch(downloadUrl);
+      if (!fileRes.ok) {
+        console.error(`Failed to download ${filename}: ${fileRes.statusText}`);
+        continue;
+      }
+
+      try {
+        await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
+        console.log(`Downloaded ${filename} to ${localPath}`);
+      } catch (err) {
+        console.error(`Failed to save ${filename}: ${err.message}`);
+      }
+    }
+
   } catch (error) {
     console.error('Error downloading or slicing logs:', error);
     throw error; // Re-throw to handle it in the calling function
@@ -92,5 +140,44 @@ function sliceLogsByDate(logData) {
   } catch (err) {
     console.error('Error slicing logs by date:', err);
     throw err; // Re-throw to handle it in the calling function
+  }
+}
+
+export async function listLogFiles(logsFolder) {
+  try {
+    const files = await fs.promises.readdir(logsFolder);
+    return files;
+  } catch (err) {
+    throw new Error('Failed to list log files');
+  }
+}
+
+export async function sendLogFile(req, res) {
+  try {
+    const { filename } = req.params;
+
+    // Validate filename
+    if (!filename || filename.includes('..') || filename.includes('/')) {
+      return res.status(400).json({ message: 'Invalid filename' });
+    }
+
+    const filePath = path.join(logsFolder, filename);
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ message: 'Log file not found' });
+    }
+
+    // Stream/download the file
+    res.download(filePath, filename, (err) => {
+      if (err) {
+        console.error('Error sending log file:', err.message);
+        res.status(500).json({ message: 'Failed to download log file' });
+      } else {
+        console.log(`Log file sent: ${filename}`);
+      }
+    });
+  } catch (err) {
+    console.error('Error in sendLogFile:', err.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
