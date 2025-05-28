@@ -58,8 +58,9 @@ process.on('unhandledRejection', function (reason, promise) {
 // Create a connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  idleTimeoutMillis: 10000, // 10 seconds idle limit
+  connectionTimeoutMillis: 5000 // 5 seconds to connect
 });
-
 
 // Connecting to the database
 pool.connect()
@@ -71,6 +72,10 @@ pool.connect()
     console.error('Database connection failed');
     process.exit(1);
   });
+
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle client:', err.message || err);
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://0.0.0.0:${port}`);
