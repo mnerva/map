@@ -23,6 +23,7 @@ export async function handleDownloadAndSlice() {
   }
 
   try {
+    // Right now in memory but could be optimized to stream
     const logData = fs.readFileSync(logFilePath, 'utf-8');
 
     if (!logData.trim()) {
@@ -151,6 +152,7 @@ export async function listLogFiles(logsFolder) {
 }
 
 export async function sendLogFile(req, res) {
+  const logsFolder = process.env.LOGS_FOLDER;
   try {
     const { filename } = req.params;
 
