@@ -30,9 +30,7 @@ export async function handleDownloadAndSlice() {
     }
 
     const slicedLogs = sliceLogsByDate(logData);
-    console.log('Sliced logs by date:', slicedLogs);
     const dates = Object.keys(slicedLogs);
-    console.log('Dates found in logs:', dates);
 
     if (dates.length === 0) {
       throw new Error('No valid log entries found for any date.');

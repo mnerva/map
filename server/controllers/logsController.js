@@ -1,5 +1,4 @@
-import { handleDownloadAndSlice } from '../log_handling/logHandling.js';
-import { sendLogFile } from '../log_handling/logHandling.js';
+import { handleDownloadAndSlice, listLogFiles, sendLogFile } from '../log_handling/logHandling.js';
 import fs from 'fs';
 
 export async function downloadLogs(req, res) {
