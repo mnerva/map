@@ -13,9 +13,10 @@ const __dirname = dirname(__filename);
 export async function handleDownloadAndSlice() {
   const logFilePath = '/tmp/access.log';
   // Local folder to store downloaded files
-  const localLogFilePath = path.join(__dirname, 'logs');
+  const localLogFilePath = path.join(__dirname, 'server', 'log_handling', 'logs');
   const username =  process.env.LOGS_AUTH_USER;
   const password =  process.env.LOGS_AUTH_PASS;
+  // Folder in server to store sliced logs
   const logsFolder = process.env.LOGS_FOLDER;
 
   if (!fs.existsSync(logFilePath)) {
@@ -92,8 +93,6 @@ export async function handleDownloadAndSlice() {
       const localPath = path.join(localLogFilePath, filename);
       console.log('downloadUrl:', downloadUrl);
 
-      let fileRes;
-
       try {
         const fileRes = await fetch(downloadUrl, {
           headers: {
@@ -106,12 +105,14 @@ export async function handleDownloadAndSlice() {
         }
 
         await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
+        fileStream.on('finish', () => {
+          console.log('Write stream finished.');
+        });
         console.log(`Downloaded ${filename} to ${localPath}`);
       } catch (err) {
           console.error(`Failed to download ${filename}: ${err.message}`);
       }
     }
-
   } catch (error) {
     console.error('Error downloading or slicing logs:', error);
     throw error; // Re-throw to handle it in the calling function
