@@ -105,9 +105,6 @@ export async function handleDownloadAndSlice() {
         }
 
         await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
-        fileStream.on('finish', () => {
-          console.log('Write stream finished.');
-        });
         console.log(`Downloaded ${filename} to ${localPath}`);
       } catch (err) {
           console.error(`Failed to download ${filename}: ${err.message}`);
