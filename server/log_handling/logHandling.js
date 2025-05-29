@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 export async function handleDownloadAndSlice() {
   const logFilePath = '/tmp/access.log';
   // Local folder to store downloaded files
-  const localLogFilePath = path.join(__dirname, 'server', 'log_handling', 'logs');
+  const localLogFilePath = path.join(__dirname, 'logs');
   const username =  process.env.LOGS_AUTH_USER;
   const password =  process.env.LOGS_AUTH_PASS;
   // Folder in server to store sliced logs
@@ -86,6 +86,14 @@ export async function handleDownloadAndSlice() {
     if (!fs.existsSync(localLogFilePath)) {
       fs.mkdirSync(localLogFilePath, { recursive: true });
       console.log(`Created local folder ${localLogFilePath}`);
+    }
+
+    // Check write permission
+    try {
+      fs.accessSync(localLogFilePath, fs.constants.W_OK);
+      console.log('Logs folder in the computer is writable');
+    } catch (err) {
+      console.error('Logs folder is not writable:', err.message);
     }
 
     for (const filename of files) {

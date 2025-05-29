@@ -28,6 +28,8 @@ services:
       - map_network
     depends_on:
       - db
+    volumes:
+      - ./server/log_handling/logs:/usr/src/app/server/log_handling/logs
 
 
   frontend:
