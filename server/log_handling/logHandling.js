@@ -189,7 +189,7 @@ export async function sendLogFile(req, res) {
     }
 
     // Stream/download the file
-    res.sendFile(filePath, filename, (err) => {
+    res.sendFile(filePath, (err) => {
       if (err) {
         console.error('Error sending log file:', err.message);
         res.status(500).json({ message: 'Failed to download log file' });
