@@ -104,21 +104,11 @@ export async function handleDownloadAndSlice() {
           console.error(`Failed to download ${filename}: ${fileRes.status} ${fileRes.statusText}`);
           return;
         }
-      } catch (err) {
-          console.error(`Failed to download ${filename}: ${err.message}`);
-      }
 
-      // Check if fileRes.body exists before using it
-      if (!fileRes || !fileRes.body) {
-        console.error(`No response body for ${filename}`);
-        continue;
-      }
-
-      try {
         await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
         console.log(`Downloaded ${filename} to ${localPath}`);
       } catch (err) {
-        console.error(`Failed to save ${filename}: ${err.message}`);
+          console.error(`Failed to download ${filename}: ${err.message}`);
       }
     }
 
