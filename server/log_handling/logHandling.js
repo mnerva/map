@@ -92,6 +92,8 @@ export async function handleDownloadAndSlice() {
       const localPath = path.join(localLogFilePath, filename);
       console.log('downloadUrl:', downloadUrl);
 
+      let fileRes;
+
       try {
         const fileRes = await fetch(downloadUrl, {
           headers: {
@@ -107,6 +109,7 @@ export async function handleDownloadAndSlice() {
       }
 
       try {
+        // the fileRes is not defined here
         await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
         console.log(`Downloaded ${filename} to ${localPath}`);
       } catch (err) {
