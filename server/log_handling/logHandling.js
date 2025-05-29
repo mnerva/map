@@ -108,8 +108,13 @@ export async function handleDownloadAndSlice() {
           console.error(`Failed to download ${filename}: ${err.message}`);
       }
 
+      // Check if fileRes.body exists before using it
+      if (!fileRes || !fileRes.body) {
+        console.error(`No response body for ${filename}`);
+        continue;
+      }
+
       try {
-        // the fileRes is not defined here
         await streamPipeline(fileRes.body, fs.createWriteStream(localPath));
         console.log(`Downloaded ${filename} to ${localPath}`);
       } catch (err) {
