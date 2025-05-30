@@ -8,13 +8,14 @@ const __dirname = path.dirname(__filename);
 
 console.log("Current Directory:", __dirname);
 
-const logsDir = path.join(__dirname, '..', 'log_handling', 'logs');
-const scriptPath = path.join(__dirname, 'log_handling', 'handleLogs.sh');
+const logsDir = path.join(__dirname, '../log_handling/logs');
+const scriptPath = path.join(__dirname, '../log_handling/handleLogs.sh');
 
 console.log("Logs Directory:", logsDir);
 console.log("Script Path:", scriptPath);
 
 if (!fs.existsSync(logsDir)) {
+  console.log(`Creating logs directory at: ${logsDir}`);
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
