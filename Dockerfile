@@ -5,6 +5,9 @@ COPY ./server/package.json ./
 RUN npm install
 COPY ./server ./
 
+# Make sure the script is executable
+RUN chmod +x /app/server/log_handling/handleLogs.sh
+
 # === Build final image ===
 FROM nginx:alpine
 

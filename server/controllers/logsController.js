@@ -9,6 +9,15 @@ const __dirname = path.dirname(__filename);
 const logsDir = path.join(__dirname, '..', 'log_handling', 'logs');
 const scriptPath = path.join(__dirname, '..', 'log_handling', 'handleLogs.sh');
 
+if (!fs.existsSync(scriptPath)) {
+  console.error(`Script not found at path: ${scriptPath}`);
+  return res.status(500).send('Script not found');
+}
+
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+
 console.log("Logs Directory:", logsDir);
 console.log("Script Path:", scriptPath);
 
