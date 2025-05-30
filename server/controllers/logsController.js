@@ -9,33 +9,42 @@ const __dirname = path.dirname(__filename);
 const logsDir = path.join(__dirname, '..', 'log_handling', 'logs');
 const scriptPath = path.join(__dirname, '..', 'log_handling', 'handleLogs.sh');
 
-if (!fs.existsSync(scriptPath)) {
-  console.error(`Script not found at path: ${scriptPath}`);
-  return res.status(500).send('Script not found');
-}
+console.log("Logs Directory:", logsDir);
+console.log("Script Path:", scriptPath);
 
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
-console.log("Logs Directory:", logsDir);
-console.log("Script Path:", scriptPath);
-
 // Controller to run the bash script
 export function splitLogsHandler(req, res) {
-  execFile(scriptPath, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing script: ${error.message}`);
-      return res.status(500).send('Failed to split logs');
+  // Check if the script file exists
+  if (!fs.existsSync(scriptPath)) {
+    console.error(`Script not found at path: ${scriptPath}`);
+    return res.status(500).send('Script not found');
+  }
+
+  // Check if the script is executable
+  fs.access(scriptPath, fs.constants.X_OK, (err) => {
+    if (err) {
+      console.error(`Script is not executable: ${err.message}`);
+      return res.status(500).send('Script is not executable');
     }
 
-    if (stderr) {
-      console.error(`Script stderr: ${stderr}`);
-    }
+    execFile(scriptPath, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing script: ${error.message}`);
+        return res.status(500).send('Failed to split logs');
+      }
 
-    console.log(`Script output:\n${stdout}`);
-    res.status(200).send('Logs split successfully');
-  });
+      if (stderr) {
+        console.error(`Script stderr: ${stderr}`);
+      }
+
+      console.log(`Script output:\n${stdout}`);
+      res.status(200).send('Logs split successfully');
+    });
+  })
 }
 
 export function listLogFiles(req, res) {
@@ -54,7 +63,7 @@ export function downloadLogFile(req, res) {
   const filePath = path.join(logsDir, req.params.filename);
 
   if (!fs.existsSync(filePath)) {
-    return res.status(404).json('Log file not found');
+    return res.status(404).json({ message: 'Log file not found' });
   }
 
   res.download(filePath);
