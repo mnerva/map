@@ -24,6 +24,8 @@ services:
       - DATABASE_URL: ${DATABASE_URL}
     ports:
       - "8000:8000"
+    volumes:
+      - ./server/log_handling:/server/log_handling
     networks:
       - map_network
     depends_on:
