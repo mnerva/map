@@ -3,7 +3,7 @@
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-HOST_LOG_FILE="$SCRIPT_DIR/../nginx/logs/access.log"
+HOST_LOG_FILE="$SCRIPT_DIR/../../nginx/logs/access.log"
 LOCAL_LOG_DIR="$SCRIPT_DIR/logs"
 
 # Month conversion map

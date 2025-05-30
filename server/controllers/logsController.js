@@ -5,11 +5,11 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const logsDir = path.join(__dirname, '../../log_handling/logs');
+const logsDir = path.join(__dirname, '../log_handling/logs');
 
 // Controller to run the bash script
 export function splitLogsHandler(req, res) {
-  const scriptPath = path.join(__dirname, '../../log_handling/handleLogs.sh');
+  const scriptPath = path.join(__dirname, '../log_handling/handleLogs.sh');
 
   execFile(scriptPath, (error, stdout, stderr) => {
     if (error) {
