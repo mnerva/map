@@ -1,5 +1,4 @@
 #!/bin/bash
-# Split access.log into per-date logs
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

@@ -4,7 +4,6 @@ WORKDIR /app/server
 COPY ./server/package.json ./ 
 RUN npm install
 COPY ./server ./
-COPY ./server/log_handling ./log_handling
 
 RUN echo "Checking contents of log_handling..." && ls -la /app/server/log_handling
 
@@ -22,6 +21,9 @@ COPY --from=backend-build /app/server /server
 
 # Copy nginx config
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Install Node.js + npm so backend can run
+RUN apk add --no-cache nodejs npm bash
 
 # Install Node so backend can run
 RUN apk add --no-cache nodejs npm
