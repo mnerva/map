@@ -6,8 +6,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+console.log("Current Directory:", __dirname);
+
 const logsDir = path.join(__dirname, '..', 'log_handling', 'logs');
-const scriptPath = path.join(__dirname, '..', 'log_handling', 'handleLogs.sh');
+const scriptPath = path.join(__dirname, 'log_handling', 'handleLogs.sh');
 
 console.log("Logs Directory:", logsDir);
 console.log("Script Path:", scriptPath);
