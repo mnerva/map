@@ -4,6 +4,9 @@ WORKDIR /app/server
 COPY ./server/package.json ./ 
 RUN npm install
 COPY ./server ./
+COPY ./server/log_handling ./log_handling
+
+RUN echo "Checking contents of log_handling..." && ls -la /app/server/log_handling
 
 # Make sure the script is executable
 RUN chmod +x /app/server/log_handling/handleLogs.sh
