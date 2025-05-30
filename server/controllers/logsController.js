@@ -10,6 +10,7 @@ const logsDir = path.join(__dirname, '../log_handling/logs');
 // Controller to run the bash script
 export function splitLogsHandler(req, res) {
   const scriptPath = path.join(__dirname, '../log_handling/handleLogs.sh');
+  console.log("SCRIPT PATH:", scriptPath);
 
   execFile(scriptPath, (error, stdout, stderr) => {
     if (error) {
