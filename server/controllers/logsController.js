@@ -6,14 +6,14 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const projectRoot = path.resolve(__dirname, '..', '..');
-const logsDir = path.join(projectRoot, 'log_handling', 'logs');
-const scriptPath = path.join(projectRoot, 'log_handling', 'handleLogs.sh');
+const logsDir = path.join(__dirname, '..', 'log_handling', 'logs');
+const scriptPath = path.join(__dirname, '..', 'log_handling', 'handleLogs.sh');
+
+console.log("Logs Directory:", logsDir);
+console.log("Script Path:", scriptPath);
 
 // Controller to run the bash script
 export function splitLogsHandler(req, res) {
-  console.log("SCRIPT PATH:", scriptPath);
-
   execFile(scriptPath, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing script: ${error.message}`);
