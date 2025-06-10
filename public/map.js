@@ -87,7 +87,13 @@ export function toggleMarkers(map, items, type) {
     });
 
     markersVisible[type] = false;
-    document.querySelector(`.filterBtn[data-type="${type}"]`).style.border = 'none';
+
+    // Update button border when toggling off
+    const button = document.querySelector(`.filterBtn[data-type="${type}"]`);
+    if (button) {
+      console.log("heard button off click")
+      button.style.border = 'none';
+    }
     return
   }
   
@@ -154,7 +160,12 @@ export function toggleMarkers(map, items, type) {
   });
 
   markersVisible[type] = true;
-  document.querySelector(`.filterBtn[data-type="${type}"]`).style.border = `2px solid ${markerColor}`;
+
+  // Update button border when toggling on
+  const button = document.querySelector(`.filterBtn[data-type="${type}"]`);
+  if (button) {
+    button.style.setProperty('border', `2px solid ${markerColor}`);
+  }
 
   map.on('click', layerId, (e) => {
     const feature = e.features[0];
