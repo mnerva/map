@@ -131,7 +131,7 @@ export function toggleMarkers(map, items, type) {
       'circle-color': markerColor,
       'circle-opacity': 0.9,
       'circle-stroke-color': '#000000',
-      'circle-stroke-width': 2
+      'circle-stroke-width': 0.7
     },
   });
 
