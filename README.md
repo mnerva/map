@@ -46,7 +46,7 @@ MAPTILER_API_KEY=your_maptiler_api_key
 DATABASE_URL=postgres://username:password@db:5432/map
 ```
 
-Replace `your_maptiler_api_key`, `username`, `password`, and other placeholders with your actual configuration values.
+Replace `your_maptiler_api_key`, `username`, `password` with your actual configuration values.
 
 ### 3. Build and Start the Docker Containers
 Ensure Docker is installed and running on your system. Then, build and start the containers using `docker-compose`:
@@ -69,20 +69,25 @@ docker-compose down
 ```
 map/
 ├── nginx/
-    ├── nginx.conf          # Nginx configuration
+    ├── default.conf        # Nginx configuration
 ├── public/
+│   ├── api.js              # API calls to fetch data
 │   ├── index.html          # Main HTML file
-│   ├── style.css           # CSS for styling
 │   ├── main.js             # Main JavaScript logic
 │   ├── map.js              # Map-related functionality
-│   ├── api.js              # API calls to fetch data
+│   ├── style.css           # CSS for styling
 ├── server/
 │   ├── controllers/        # API controllers
 │   ├── db/                 # Database initialization and data storing
 │       ├── initdb/         # Extensions and database schema
-│   ├── app.js              # Express server setup
 │   ├── routes/             # API route handlers
-├── package.json            # Node.js dependencies
+│   ├── .env                # Hidden variable values
+│   ├── Dockerfile          # Dockerfile
+│   ├── package.json        # Node.js dependencies
+│   ├── server.js           # Express server setup
+├── docker-compose.yml      # Docker compose file
+├── Dockerfile              # Dockerfile
+├── package.json            # Dependencies
 ```
 
 ## API Endpoints
