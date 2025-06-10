@@ -29,10 +29,10 @@ export async function initMap() {
 }
 
 const markerColors = {
-  city: '#8b826c',
-  food: '#694f40',
-  books: '#4f6940',
-  nature: '#4f4069',
+  city: '#4287f5',
+  food: '#fa842f',
+  books: '#1726fc',
+  nature: '#14db5d',
 }
 
 let markers = {
