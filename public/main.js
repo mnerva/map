@@ -76,7 +76,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (toggle) {
       toggle.addEventListener('click', () => {
-        console.log('Toggle sidebar clicked');
         const isOpen = wrapper.classList.contains('open');
         wrapper.classList.toggle('open');
         sidebar.setAttribute('aria-hidden', isOpen);
@@ -167,8 +166,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
     
     function showSuggestions(data) {
-      console.log('data: ', data);
-
       suggestionsList.innerHTML = "";
     
       if (data.length === 0) {
@@ -181,12 +178,10 @@ window.addEventListener('DOMContentLoaded', async () => {
         li.textContent = `${place.name}`;
         li.dataset.lng = place.longitude;
         li.dataset.lat = place.latitude;
-        console.log('created the li: ', li);
 
         li.addEventListener("click", () => {
           const lat = parseFloat(li.dataset.lat);
           const lng = parseFloat(li.dataset.lng);
-          console.log('heard the click form the suggestion');
           suggestionsList.innerHTML = "";
           searchInput.value = place.name;
           map.flyTo({ 
