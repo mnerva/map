@@ -2,8 +2,10 @@
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-HOST_LOG_FILE="$SCRIPT_DIR/../../nginx/logs/access.log"
+HOST_LOG_FILE="/tmp/access.log"
 LOCAL_LOG_DIR="$SCRIPT_DIR/logs"
+
+echo "Looking for log file at: $HOST_LOG_FILE"
 
 # Month conversion map
 declare -A MONTH_MAP=(
@@ -29,7 +31,7 @@ echo "Splitting logs by date into: $LOCAL_LOG_DIR"
 
 # Read and split logs
 while IFS= read -r line; do
-  if [[ $line =~ \[([0-9]{2})/([A-Za-z]{3})/([0-9]{4}) ]]; then
+  if [[ $line =~ \[([0-9]{2})/([A-Za-z]{3})/([0-9]{4}) ]] ; then
     DAY="${BASH_REMATCH[1]}"
     MONTH_STR="${BASH_REMATCH[2]}"
     YEAR="${BASH_REMATCH[3]}"
