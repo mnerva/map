@@ -27,8 +27,6 @@ fi
 # Create output directory
 mkdir -p "$LOCAL_LOG_DIR"
 
-echo "Splitting logs by date into: $LOCAL_LOG_DIR"
-
 # Read and split logs
 while IFS= read -r line; do
   if [[ $line =~ \[([0-9]{2})/([A-Za-z]{3})/([0-9]{4}) ]] ; then
@@ -41,5 +39,8 @@ while IFS= read -r line; do
     echo "$line" >> "${LOCAL_LOG_DIR}/access-${DATE}.log"
   fi
 done < "$HOST_LOG_FILE"
+
+# Delete the original log file
+rm -f "$HOST_LOG_FILE"
 
 echo "Log splitting complete. See files in: $LOCAL_LOG_DIR"
