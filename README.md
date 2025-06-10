@@ -6,7 +6,7 @@ Check out the live version here: [map-a363.onrender.com](https://map-a363.onrend
 ![picture of the application](image.png)
 
 ## Overview
-This is an interactive map application that allows users to view cool places around the world categorized by cities, food places, places related to books and nature. Users can view points on the map by category, search for places, click on a location to zoom into that place on the map, and click on the point to see the place's description. It is also possible for the user to switch between globe and projection view, and change the style of the map. 
+This is an interactive map application that allows users to view cool places around the world categorized by cities, food places, places related to books (such as bookstores and libraries) and nature. Users can view points on the map by category, search for places, click on a location to zoom into that place on the map, and click on the point to see the place's description. It is also possible for the user to switch between globe and projection view, and change the style of the map. 
 
 ## Features
 - **Interactive Map**: Displays markers for different categories of places.

@@ -29,6 +29,8 @@ mkdir -p "$LOCAL_LOG_DIR"
 
 # Read and split logs
 while IFS= read -r line; do
+  # Needs a specific format for logs
+  # Example format: 127.0.0.1 - - [10/Jun/2024:12:34:56 +0000] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0"
   if [[ $line =~ \[([0-9]{2})/([A-Za-z]{3})/([0-9]{4}) ]] ; then
     DAY="${BASH_REMATCH[1]}"
     MONTH_STR="${BASH_REMATCH[2]}"
@@ -37,6 +39,9 @@ while IFS= read -r line; do
     DATE="${YEAR}-${MONTH}-${DAY}"
 
     echo "$line" >> "${LOCAL_LOG_DIR}/access-${DATE}.log"
+  else
+    # Handle lines that don't match the expected format
+    echo "$line" >> "${LOCAL_LOG_DIR}/unmatched.log"
   fi
 done < "$HOST_LOG_FILE"
 

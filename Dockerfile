@@ -28,6 +28,9 @@ RUN apk add --no-cache nodejs npm bash
 # Install Node so backend can run
 RUN apk add --no-cache nodejs npm
 
+# Set environment variable for production
+ENV NODE_ENV=production
+
 # Set backend working dir
 WORKDIR /server
 
