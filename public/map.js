@@ -21,13 +21,7 @@ export async function initMap() {
     Object.keys(markersVisible).forEach(type => {
       if (markersVisible[type]) {
         markersVisible[type] = false;
-        if (!map.isStyleLoaded()) {
-          map.once('style.load', () => {
-            toggleMarkers(map, markers[type], type);
-          });
-        } else {
-          toggleMarkers(map, markers[type], type);
-        }
+        toggleMarkers(map, markers[type], type);
       };
     });
   });
@@ -159,6 +153,15 @@ export function toggleMarkers(map, items, type) {
   });
 
   markersVisible[type] = true;
+
+  const button = document.querySelector(`.filterBtn[data-type="${type}"]`);
+  if (button) {
+    if (markersVisible[type]) {
+      button.style.border = `2px solid ${markerColor}`;
+    } else {
+      button.style.border = 'none';
+    }
+  }
 
   map.on('click', layerId, (e) => {
     const feature = e.features[0];
