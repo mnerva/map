@@ -152,6 +152,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.trim();
+
+      // Sanitize input: allow only letters, numbers, and spaces
+      query = query.replace(/[^a-zA-Z\s]/g, "");
     
       clearTimeout(debounceTimeout);
 

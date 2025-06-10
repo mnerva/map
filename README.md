@@ -46,6 +46,8 @@ MAPTILER_API_KEY=your_maptiler_api_key
 DATABASE_URL=postgres://username:password@db:5432/map
 LOGS_AUTH_USER=your_username
 LOGS_AUTH_PASS=your_password
+POSTGRES_USER=your_user
+POSTGRES_PASSWORD=your_password
 ```
 
 Replace `your_maptiler_api_key`, `username`, `password`, `your_username`, `your_password` with your actual configuration values.
