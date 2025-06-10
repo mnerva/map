@@ -32,7 +32,7 @@ const markerColors = {
   city: '#4287f5',
   food: '#fa842f',
   books: '#1726fc',
-  nature: '#14db5d',
+  nature: '#029e31',
 }
 
 let markers = {
@@ -130,6 +130,8 @@ export function toggleMarkers(map, items, type) {
       'circle-radius': 6,
       'circle-color': markerColor,
       'circle-opacity': 0.9,
+      'circle-stroke-color': '#000000',
+      'circle-stroke-width': 2
     },
   });
 
