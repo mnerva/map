@@ -40,7 +40,7 @@ while IFS= read -r line; do
   fi
 done < "$HOST_LOG_FILE"
 
-# Delete the original log file
-rm -f "$HOST_LOG_FILE"
+# Empty the original log file
+: > "$HOST_LOG_FILE"
 
 echo "Log splitting complete. See files in: $LOCAL_LOG_DIR"
