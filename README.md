@@ -33,7 +33,7 @@ This is an interactive map application that allows users to view cool places aro
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/mnerva/map.git
 cd map
 ```
 
