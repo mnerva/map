@@ -87,6 +87,7 @@ export function toggleMarkers(map, items, type) {
     });
 
     markersVisible[type] = false;
+    document.querySelector(`.filterBtn[data-type="${type}"]`).style.border = 'none';
     return
   }
   
@@ -153,15 +154,7 @@ export function toggleMarkers(map, items, type) {
   });
 
   markersVisible[type] = true;
-
-  const button = document.querySelector(`.filterBtn[data-type="${type}"]`);
-  if (button) {
-    if (markersVisible[type]) {
-      button.style.border = `2px solid ${markerColor}`;
-    } else {
-      button.style.border = 'none';
-    }
-  }
+  document.querySelector(`.filterBtn[data-type="${type}"]`).style.border = `2px solid ${markerColor}`;
 
   map.on('click', layerId, (e) => {
     const feature = e.features[0];
